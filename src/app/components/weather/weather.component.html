@@ -1,11 +1,15 @@
-<section *ngIf="weatherFeatures">
+<!--<section>
+    <input type="text">
+</section>-->
+
+<article *ngIf="weatherFeatures">
     <div>
-        <h2>location: {{ weatherFeatures.name }}</h2>
+        <h2>Your location: {{ weatherFeatures.name }}</h2>
         <span>lat: {{ weatherFeatures.coord.lat }} </span>
         <span>lon: {{ weatherFeatures.coord.lon }}</span>
     </div>
     <div>
-        <span>min temp {{ weatherFeatures.main.temp_min }}</span>
+        <span>min temp {{ weatherFeatures.main.temp_min }} </span>
         <span>max temp {{ weatherFeatures.main.temp_max }}</span>
     </div>
-</section>
+</article>

@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core'
+import {
+    Injectable,
+} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import {
     map,
@@ -6,6 +8,11 @@ import {
 } from 'rxjs'
 import { ResponseApiInterface } from '../interfaces/api-response.interface'
 import { DescriptionInterface } from '../interfaces/descriptionInterface'
+import { CoordinatesService } from './coordinates.service'
+import {
+    UserCoordinatesInterface,
+    UserCoordsInterface,
+} from '../interfaces/user-coordinates.interface'
 
 
 @Injectable({
@@ -14,13 +21,25 @@ import { DescriptionInterface } from '../interfaces/descriptionInterface'
 
 export class WeatherService {
 
-    apiLink = 'https://fcc-weather-api.glitch.me/api/current?lat=48.46107096624887&lon=35.016826831859625'
+    position: any
+    // apiLink: string = ''
+    // apiLink = `https://fcc-weather-api.glitch.me/api/current?lat=40&lon=39`
+    apiLink = 'https://fcc-weather-api.glitch.me/api/current?'
 
     constructor(
         private http: HttpClient,
-    ) {}
+        // public userCoordinatesService: CoordinatesService,
+    ) {
+        // this.position = this.userCoordinatesService.getCoordinates()
+        // this.apiLink = `https://fcc-weather-api.glitch.me/api/current?lat=${ this.position.latitude }&lon=${ this.position.longitude }`
+        // console.log('get', this.apiLink)
 
-    getWeatherData(): Observable<ResponseApiInterface> {
+    }
+
+    getWeatherData(userCoords: any ): Observable<ResponseApiInterface> {
+        console.log('from component', userCoords)
+        this.apiLink += userCoords
+        console.log('link', this.apiLink)
         return this.http.get<ResponseApiInterface>(this.apiLink).pipe(
             map( response => this.processResponse(response))
         )
@@ -29,12 +48,13 @@ export class WeatherService {
     private processResponse(response: ResponseApiInterface): ResponseApiInterface {
         return {
             coord: { ...response.coord },
-            weather: response.weather.map( (param: any) => (<DescriptionInterface>{
-                id: param.id,
-                main: param.main,
-                description: param.description,
-                icon: param.icon,
-            })),
+            // weather: response.weather.map( (param: any) => (<DescriptionInterface>{
+            //     id: param.id,
+            //     main: param.main,
+            //     description: param.description,
+            //     icon: param.icon,
+            // })),
+            weather: { ...response.weather },
             base: response.base,
             main: { ...response.main },
             visibility: response.visibility,
