@@ -3,60 +3,50 @@ import {
     OnInit,
 } from '@angular/core'
 import { WeatherService } from '../../services/weather.service'
-import { ResponseApiInterface } from '../../interfaces/api-response.interface'
+import { ResponseWeatherApiInterface } from '../../interfaces/api-response.interface'
 import { CoordinatesService } from '../../services/coordinates.service'
-import {
-    UserCoordinatesInterface,
-    UserCoordsInterface,
-} from '../../interfaces/user-coordinates.interface'
+import { CoordinatesResponseInterface } from '../../interfaces/coordinates-response.interface'
 
 @Component({
     selector: 'app-weather',
     templateUrl: './weather.component.html',
     styleUrls: ['./weather.component.scss'],
-    providers: [WeatherService, CoordinatesService]
+    providers: [WeatherService, CoordinatesService],
 })
 export class WeatherComponent implements OnInit {
 
-    cords: any
-    lat: number
-    lon: number
-    weatherFeatures: ResponseApiInterface
+    weatherFeatures: ResponseWeatherApiInterface
+
+    locations: any[] = []
 
     constructor(
         private weatherService: WeatherService,
         public userCoordinatesService: CoordinatesService,
     ) { }
 
-    ngOnInit(): void {
-        // this.cords = this.userCoordinatesService.getCoordinates()
-        //
-        // this.userCoordinatesService.usersLocationSubject.subscribe(v => console.log('Subject',v))
-        //
-        // console.log('QQ',this.cords)
-        this.getLocation()
+    async ngOnInit(): Promise<any> {
+        let userCoords: CoordinatesResponseInterface | undefined
 
-            // this.weatherService.getWeatherData(LOC)
-            //     .subscribe((value: any) => {
-            //         this.weatherFeatures = value
-            //     })
+        // at first, we receive data with user's coordinates
+        await this.userCoordinatesService.getCoordinates()
+                  .then((userCoordsFromService: CoordinatesResponseInterface) => userCoords = userCoordsFromService)
+
+        // after we transfer user's coordinates to weather service
+        this.weatherService.getWeatherData(userCoords)
+
+            // and receive a response from Weather API based on current user's location
+            .subscribe((value: any) => {
+                this.weatherFeatures = value
+            })
     }
 
-    getLocation(): any {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                    this.lat = position.coords.latitude
-                    this.lon = position.coords.longitude
-                    this.cords = `lat=${this.lat}&lon=${this.lon}`
-                    //console.log('CORDDDDDD', this.cords)
+    addToSavedLocations() {
+        const newObj = { ...this.weatherFeatures }
+        this.locations.push(newObj)
+    }
 
-                this.weatherService.getWeatherData(this.cords)
-                    .subscribe((value: any) => {
-                        console.log('VVVV', value)
-                        this.weatherFeatures = value
-                    })
-            },
-                positionError => console.log(positionError))
-        }
+    deleteSavedLocation(index: number) {
+        console.log(index)
+        this.locations.splice(this.locations.indexOf(index))
     }
 }

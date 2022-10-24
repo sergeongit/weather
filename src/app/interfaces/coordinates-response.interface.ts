@@ -1,4 +1,4 @@
-export interface UserCoordinatesInterface {
+export interface CoordinatesResponseInterface {
     coords: UserCoordsInterface
     timestamp: number
 }

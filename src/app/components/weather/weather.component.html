@@ -1,15 +1,24 @@
-<!--<section>
-    <input type="text">
-</section>-->
-
 <article *ngIf="weatherFeatures">
     <div>
-        <h2>Your location: {{ weatherFeatures.name }}</h2>
-        <span>lat: {{ weatherFeatures.coord.lat }} </span>
-        <span>lon: {{ weatherFeatures.coord.lon }}</span>
+        <div>
+            <h2>Your location: {{ weatherFeatures.name }}</h2>
+            <span>lat: {{ weatherFeatures.coord.lat }} </span>
+            <span>lon: {{ weatherFeatures.coord.lon }}</span>
+        </div>
+        <div>
+            <span>min temp {{ weatherFeatures.main.temp_min | number: '1.0-0' }} </span>
+            <span>max temp {{ weatherFeatures.main.temp_max | number: '1.0-0' }}</span>
+        </div>
     </div>
-    <div>
-        <span>min temp {{ weatherFeatures.main.temp_min }} </span>
-        <span>max temp {{ weatherFeatures.main.temp_max }}</span>
-    </div>
+
+    <button (click)="addToSavedLocations()">Save location</button>
 </article>
+
+<!--section with saved locations-->
+<section class="locations-list" *ngFor="let location of locations; index as ind">
+    <div class="border">
+        {{ind}}
+        <span>{{location.name}}</span>
+        <button (click)="deleteSavedLocation(ind)">delete</button>
+    </div>
+</section>

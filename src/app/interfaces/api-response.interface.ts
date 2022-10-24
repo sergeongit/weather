@@ -2,7 +2,7 @@ import { CoordinatesInterface } from './coordinates.interface'
 import { DescriptionInterface } from './descriptionInterface'
 import { MainParametersInterface } from './main-parameters.interface'
 
-export interface ResponseApiInterface {
+export interface ResponseWeatherApiInterface {
     coord: CoordinatesInterface
     weather: DescriptionInterface[]
     base: string
