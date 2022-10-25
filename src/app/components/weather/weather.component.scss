@@ -1,11 +1,19 @@
-.locations-list {
-    display: flex;
-    flex-direction: column;
+mat-card-title {
+    margin-bottom: 20px;
+}
+
+.my-location {
+    margin-bottom: 40px;
 }
 
 .border {
     width: auto;
     margin-bottom: 8px;
     padding: 12px 20px;
-    border: 1px solid greenyellow;
+    border: 1px solid #69f0ae;
+    border-radius: 4px;
+
+    button {
+        margin-left: 20px;
+    }
 }

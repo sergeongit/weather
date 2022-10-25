@@ -13,7 +13,6 @@ export class CoordinatesService {
             navigator.geolocation.getCurrentPosition((position: CoordinatesResponseInterface) => {
                     resolve(position.coords)
                 }
-                // positionError => console.log(positionError)
             )
         })
             .then( value => value )

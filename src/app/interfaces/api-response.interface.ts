@@ -4,7 +4,7 @@ import { MainParametersInterface } from './main-parameters.interface'
 
 export interface ResponseWeatherApiInterface {
     coord: CoordinatesInterface
-    weather: DescriptionInterface[]
+    weather: DescriptionInterface
     base: string
     main: MainParametersInterface
     visibility: number

@@ -1,24 +1,29 @@
-<article *ngIf="weatherFeatures">
-    <div>
+<mat-card *ngIf="weatherFeatures" class="my-location">
+    <mat-card-content>
         <div>
-            <h2>Your location: {{ weatherFeatures.name }}</h2>
-            <span>lat: {{ weatherFeatures.coord.lat }} </span>
-            <span>lon: {{ weatherFeatures.coord.lon }}</span>
+            <mat-card-title>My location: {{ weatherFeatures.name }}</mat-card-title>
+            <mat-card-subtitle>My geo coordinates:</mat-card-subtitle>
+            <mat-card-title>lat: {{ weatherFeatures.coord.lat }} lon: {{ weatherFeatures.coord.lon }}</mat-card-title>
         </div>
         <div>
-            <span>min temp {{ weatherFeatures.main.temp_min | number: '1.0-0' }} </span>
-            <span>max temp {{ weatherFeatures.main.temp_max | number: '1.0-0' }}</span>
+            <mat-card-subtitle>Temperature:</mat-card-subtitle>
+            <mat-card-title>
+                min: {{ weatherFeatures.main.temp_min | number: '1.0-0' }} °C
+                max: {{ weatherFeatures.main.temp_max | number: '1.0-0' }} °C
+            </mat-card-title>
         </div>
-    </div>
+    </mat-card-content>
+    <button mat-raised-button color="accent" (click)="addToSavedLocations()">Save location</button>
+</mat-card>
 
-    <button (click)="addToSavedLocations()">Save location</button>
-</article>
+<mat-card>
+    <mat-card-title>Saved locations:</mat-card-title>
+    <mat-card-content class="border" *ngFor="let item of storage; let index = index">
+        <span>{{ item.name }}</span>
+        <button mat-raised-button color="warn" (click)="deleteSavedLocation(item.id)">delete</button>
+    </mat-card-content>
+</mat-card>
 
-<!--section with saved locations-->
-<section class="locations-list" *ngFor="let location of locations; index as ind">
-    <div class="border">
-        {{ind}}
-        <span>{{location.name}}</span>
-        <button (click)="deleteSavedLocation(ind)">delete</button>
-    </div>
-</section>
+<mat-paginator [length]="storage.length"
+               [pageSize]="4"
+></mat-paginator>

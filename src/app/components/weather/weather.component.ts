@@ -1,11 +1,15 @@
 import {
+    AfterViewInit,
     Component,
     OnInit,
+    ViewChild,
 } from '@angular/core'
 import { WeatherService } from '../../services/weather.service'
 import { ResponseWeatherApiInterface } from '../../interfaces/api-response.interface'
 import { CoordinatesService } from '../../services/coordinates.service'
 import { CoordinatesResponseInterface } from '../../interfaces/coordinates-response.interface'
+import { MatPaginator } from '@angular/material/paginator'
+
 
 @Component({
     selector: 'app-weather',
@@ -13,11 +17,17 @@ import { CoordinatesResponseInterface } from '../../interfaces/coordinates-respo
     styleUrls: ['./weather.component.scss'],
     providers: [WeatherService, CoordinatesService],
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit, AfterViewInit {
 
     weatherFeatures: ResponseWeatherApiInterface
 
-    locations: any[] = []
+    storage: any[] = []
+    dropStorage: any
+
+    length: number
+    pageSize: number = 4
+
+    @ViewChild(MatPaginator) paginator: MatPaginator
 
     constructor(
         private weatherService: WeatherService,
@@ -38,15 +48,43 @@ export class WeatherComponent implements OnInit {
             .subscribe((value: any) => {
                 this.weatherFeatures = value
             })
+
+        // init data from localStorage
+        this.initLocalStorageData()
+    }
+
+    initLocalStorageData() {
+        for (let i = 0; i < localStorage.length; i++) {
+            this.storage.push(...JSON.parse(localStorage.getItem(`${localStorage.key(i)}`) as any))
+        }
     }
 
     addToSavedLocations() {
         const newObj = { ...this.weatherFeatures }
-        this.locations.push(newObj)
+
+        let check = this.storage.find(item => item.id === newObj.id)
+
+        if (check) {
+            console.log('this city id is existing', newObj.id)
+        } else {
+            this.storage.push(newObj)
+        }
+
+        localStorage.setItem(`${newObj.id}`, JSON.stringify(this.storage))
     }
 
-    deleteSavedLocation(index: number) {
-        console.log(index)
-        this.locations.splice(this.locations.indexOf(index))
+    deleteSavedLocation(id: number) {
+        let valueToDelete = this.storage.findIndex((obj) => obj.id === id)
+        this.storage.splice(valueToDelete)
+        localStorage.removeItem(`${id}`)
+    }
+
+    ngAfterViewInit() {
+        this.paginator.page
+            .pipe()
+            .subscribe(value => {
+                console.log('tapSub', value)
+                return this.dropStorage = value
+            })
     }
 }
