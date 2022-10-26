@@ -6,6 +6,7 @@
 - NPM version 8.5
 - Angular CLI version 14.2.5
 - Yarn, run `npm install --global yarn`
+- Run `yarn install`
 
 ## Development server
 
