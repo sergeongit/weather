@@ -8,6 +8,10 @@ import { MatPaginatorModule } from '@angular/material/paginator'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MatButtonModule } from '@angular/material/button'
 import { MatCardModule } from '@angular/material/card'
+import {
+    NgbAlertModule,
+    NgbPaginationModule,
+} from '@ng-bootstrap/ng-bootstrap'
 
 @NgModule({
     declarations: [
@@ -21,6 +25,8 @@ import { MatCardModule } from '@angular/material/card'
         MatPaginatorModule,
         MatButtonModule,
         MatCardModule,
+        NgbPaginationModule,
+        NgbAlertModule,
 
     ],
     providers: [],

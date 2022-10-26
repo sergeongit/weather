@@ -1,29 +1,43 @@
-<mat-card *ngIf="weatherFeatures" class="my-location">
-    <mat-card-content>
-        <div>
-            <mat-card-title>My location: {{ weatherFeatures.name }}</mat-card-title>
+<mat-card class="header-container" *ngIf="weatherFeatures">
+    <mat-card-title class="header-title">My location: {{ weatherFeatures.name }}</mat-card-title>
+    <div class="my-location-content">
+        <mat-card-content>
             <mat-card-subtitle>My geo coordinates:</mat-card-subtitle>
             <mat-card-title>lat: {{ weatherFeatures.coord.lat }} lon: {{ weatherFeatures.coord.lon }}</mat-card-title>
-        </div>
-        <div>
+        </mat-card-content>
+        <mat-card-content>
             <mat-card-subtitle>Temperature:</mat-card-subtitle>
             <mat-card-title>
                 min: {{ weatherFeatures.main.temp_min | number: '1.0-0' }} °C
                 max: {{ weatherFeatures.main.temp_max | number: '1.0-0' }} °C
             </mat-card-title>
-        </div>
-    </mat-card-content>
+        </mat-card-content>
+        <mat-card-content>
+            <mat-card-subtitle>Air humidity:</mat-card-subtitle>
+            <mat-card-title>
+                {{ weatherFeatures.main.humidity }}%
+            </mat-card-title>
+        </mat-card-content>
+    </div>
     <button mat-raised-button color="accent" (click)="addToSavedLocations()">Save location</button>
 </mat-card>
 
-<mat-card>
+<mat-card class="saved-location-container">
     <mat-card-title>Saved locations:</mat-card-title>
-    <mat-card-content class="border" *ngFor="let item of storage; let index = index">
-        <span>{{ item.name }}</span>
-        <button mat-raised-button color="warn" (click)="deleteSavedLocation(item.id)">delete</button>
+    <mat-card-content class="saved-location-item"
+                      *ngFor="let item of storage | slice: (page-1) * pageSize : page * pageSize">
+        <h4>{{ item.name }}</h4>
+        <h5>{{ item.main.temp | number: '2.0-0' }}°C</h5>
+
+        <button mat-fab color="warn" (click)="deleteSavedLocation(item.id)">
+            <span class="material-symbols-outlined">delete</span>
+        </button>
+    </mat-card-content>
+    <mat-card-content class="pagination-box">
+        <ngb-pagination
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="storage.length">
+        </ngb-pagination>
     </mat-card-content>
 </mat-card>
-
-<mat-paginator [length]="storage.length"
-               [pageSize]="4"
-></mat-paginator>

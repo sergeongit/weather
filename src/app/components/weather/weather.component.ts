@@ -1,14 +1,11 @@
 import {
-    AfterViewInit,
     Component,
     OnInit,
-    ViewChild,
 } from '@angular/core'
 import { WeatherService } from '../../services/weather.service'
 import { ResponseWeatherApiInterface } from '../../interfaces/api-response.interface'
 import { CoordinatesService } from '../../services/coordinates.service'
 import { CoordinatesResponseInterface } from '../../interfaces/coordinates-response.interface'
-import { MatPaginator } from '@angular/material/paginator'
 
 
 @Component({
@@ -17,17 +14,14 @@ import { MatPaginator } from '@angular/material/paginator'
     styleUrls: ['./weather.component.scss'],
     providers: [WeatherService, CoordinatesService],
 })
-export class WeatherComponent implements OnInit, AfterViewInit {
+export class WeatherComponent implements OnInit {
 
     weatherFeatures: ResponseWeatherApiInterface
 
     storage: any[] = []
-    dropStorage: any
 
-    length: number
+    page: number = 1
     pageSize: number = 4
-
-    @ViewChild(MatPaginator) paginator: MatPaginator
 
     constructor(
         private weatherService: WeatherService,
@@ -53,6 +47,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
         this.initLocalStorageData()
     }
 
+    // this method parse every item by unique key in localStorage and push it to array of saved locations
     initLocalStorageData() {
         for (let i = 0; i < localStorage.length; i++) {
             this.storage.push(...JSON.parse(localStorage.getItem(`${localStorage.key(i)}`) as any))
@@ -64,6 +59,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
 
         let check = this.storage.find(item => item.id === newObj.id)
 
+        // checks if array has an adding object; if not - push it to array
         if (check) {
             console.log('this city id is existing', newObj.id)
         } else {
@@ -77,14 +73,5 @@ export class WeatherComponent implements OnInit, AfterViewInit {
         let valueToDelete = this.storage.findIndex((obj) => obj.id === id)
         this.storage.splice(valueToDelete)
         localStorage.removeItem(`${id}`)
-    }
-
-    ngAfterViewInit() {
-        this.paginator.page
-            .pipe()
-            .subscribe(value => {
-                console.log('tapSub', value)
-                return this.dropStorage = value
-            })
     }
 }
