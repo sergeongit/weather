@@ -21,7 +21,7 @@ export class WeatherComponent implements OnInit {
     storage: any[] = []
 
     page: number = 1
-    pageSize: number = 4
+    pageSize: number = 5
 
     constructor(
         private weatherService: WeatherService,

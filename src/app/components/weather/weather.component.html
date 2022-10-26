@@ -24,20 +24,22 @@
 
 <mat-card class="saved-location-container">
     <mat-card-title>Saved locations:</mat-card-title>
-    <mat-card-content class="saved-location-item"
-                      *ngFor="let item of storage | slice: (page-1) * pageSize : page * pageSize">
-        <h4>{{ item.name }}</h4>
-        <h5>{{ item.main.temp | number: '2.0-0' }}°C</h5>
+    <mat-card-content class="saved-items-box">
+        <div class="saved-location-item"
+             *ngFor="let item of storage | slice: (page-1) * pageSize : page * pageSize">
+            <h4>{{ item.name }}</h4>
+            <h5>{{ item.main.temp | number: '2.0-0' }}°C</h5>
 
-        <button mat-fab color="warn" (click)="deleteSavedLocation(item.id)">
-            <span class="material-symbols-outlined">delete</span>
-        </button>
+            <button mat-fab color="warn" (click)="deleteSavedLocation(item.id)">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+        </div>
     </mat-card-content>
     <mat-card-content class="pagination-box">
         <ngb-pagination
-                        [(page)]="page"
-                        [pageSize]="pageSize"
-                        [collectionSize]="storage.length">
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="storage.length">
         </ngb-pagination>
     </mat-card-content>
 </mat-card>

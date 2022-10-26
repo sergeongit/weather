@@ -33,37 +33,41 @@ mat-card-title {
 .saved-location-container {
     width: calc(100% - 24px);
 
-    .saved-location-item {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        max-width: 400px;
-        margin-bottom: 8px;
-        padding: 12px 20px;
-        border: 1px solid #69f0ae;
-        border-radius: 8px;
+    .saved-items-box {
+        min-height: 342px;
 
-        h4 {
-            width: 50%;
-            margin: 0;
-            font-size: 20px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .saved-location-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 8px;
+            padding: 12px 20px;
+            border: 1px solid #69f0ae;
+            border-radius: 8px;
+
+            h4 {
+                width: 50%;
+                margin: 0;
+                font-size: 20px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            h5 {
+                margin: 0;
+                font-size: 20px;
+                color: aquamarine;
+            }
+
+            button {
+                min-width: 36px;
+                margin-left: auto;
+            }
         }
 
-        h5 {
-            margin: 0;
-            font-size: 20px;
-            color: aquamarine;
+        .pagination-box {
+            margin-top: 32px;
         }
-
-        button {
-            min-width: 36px;
-            margin-left: auto;
-        }
-    }
-
-    .pagination-box {
-        margin-top: 32px;
     }
 }
